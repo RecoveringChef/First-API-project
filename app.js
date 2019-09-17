@@ -6,12 +6,12 @@ var key = "GqA63i7NZ9ihxxAQTH9q7o6VvC5o4hZa"
 // Example queryURL for Giphy API
 var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + topics + "&api_key=" + key + "&limit=5"
 
-$.ajax({
-  url: queryURL,
-  method: "GET"
-}).then(function (response) {
-  console.log(response);
-});
+//$.ajax({
+ // url: queryURL,
+ // method: "GET"
+//}).then(function (response) {
+ // console.log(response);
+//});
 
 var topics = ["food", "eating", "cooking"];
 
@@ -40,16 +40,17 @@ $(document).on("click", ".interests", function () {
   var topicData = $(this).attr("data-topic");
   console.log(topicData);
 
-  var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + topicData + "&api_key=" + key + "&limit=5"
+ // var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + topicData + "&api_key=" + key + "&limit=5"
 
-  $.ajax({
-    url: queryURL,
-    method: "GET"
-  }).then(function (response) {
-    console.log(response);
-  });
+  //$.ajax({
+  // url: queryURL,
+  //  method: "GET"
+  //}).then(function (response) {
+  // console.log("this is line 45" + response);
+   displaygif();
+  //});
+//
 
-  displaygif();
 });
 
 // make new buttons as new topics added  (take from class exercise #10).
@@ -74,15 +75,16 @@ $("#add-gif").on("click", function (event) {
 
 
 function displaygif() {
-  var gif = $(this).attr("data-name");
-  var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + gif + "&api_key=" + key + "&limit=5"
+ //var gif = $(this).attr("data-type");
+ var topicData = $(this).attr("data-topic");
+ var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + topicData + "&api_key=" + key + "&limit=5"
   $.ajax({
     url: queryURL,
     method: "GET"
-  }).then(function (response) {
-    console.log("meatballs: " + response);
+ }).then(function (response) {
+    console.log("line 79 call " + response);
     for (var i = 0; i < topics.length; i++) {
-
+console.log(topics)
       var temp = response.data[i]
       var gifUrl = temp.images.fixed_height.url
       let p = $("<p>")
@@ -99,6 +101,7 @@ function displaygif() {
     };
 
   });
+ 
 };
 
 
