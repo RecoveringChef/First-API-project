@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
     <title>Giphy</title>
 </head>
 
@@ -14,7 +16,15 @@
         <div id="buttons-view"></div>   
         
 <br>
-
+        <form id="gif-form">
+                  <!-- form entry to make new topic -->
+                <label for="gif-input"></label>
+                <input type="text" id="gif-input" placeholder="What other GIF's you want?" >
+                <br>
+          
+                <!-- new gif button -->
+                <input id="add-gif" type="submit" value="Create new topic" class="btn btn-success">
+              </form>
         <div id="gif-view"></div>
 
 
