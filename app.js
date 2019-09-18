@@ -1,19 +1,4 @@
-//test
-console.log("testing");
-
-
-var key = "GqA63i7NZ9ihxxAQTH9q7o6VvC5o4hZa"
-// Example queryURL for Giphy API
-var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + topics + "&api_key=" + key + "&limit=5"
-
-//$.ajax({
- // url: queryURL,
- // method: "GET"
-//}).then(function (response) {
- // console.log(response);
-//});
-
-var topics = ["food", "eating", "cooking"];
+var topics = ["food", "eating", "cooking", "bikes"];
 
 function renderButtons() {
   console.log("buttons")
@@ -21,38 +6,62 @@ function renderButtons() {
 
   for (var i = 0; i < topics.length; i++) {
     var a = $("<button>");
-
-    a.addClass("interests");
-
-    a.attr("data-topic", topics[i]);
-
     a.text(topics[i]);
-
+    a.addClass("interests");
+    a.attr("id", "topic-btn")
+    a.attr("data-topic", topics[i]);
     $("#buttons-view").append(a);
   }
 };
 
+
+
+var key = "GqA63i7NZ9ihxxAQTH9q7o6VvC5o4hZa"
+// Example queryURL for Giphy API
+
+
+function displaygif() {
+  //var gif = $(this).attr("data-type");
+  var topicData = $(this).attr("data-topic");
+  var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + topicData + "&api_key=" + key + "&limit=5"
+  $.ajax({
+    url: queryURL,
+    method: "GET"
+  }).then(function (response) {
+    console.log("line 79 call " + response);
+   var response = response.data;
+   
+    for (var i = 0; i < response.length; i++) {
+      var gifUrl = response[i].images.fixed_height.url;
+      var gifStill = response[i].images.original_still.url;
+      var gifAnimate = response[i].images.fixed_height.url;
+      console.log(topics);
+
+      let p = $("<p>")
+      p.addClass("pTag")
+      let img = $("<img>")
+      let a = $("<p>").text("Rating: " + response[i].rating)
+      img.addClass("gif-img")
+      img.attr("src", gifUrl)
+      img.attr("data-animate", gifAnimate)
+      img.attr("data-still", gifStill)
+      p.append(img)
+      p.append(a)
+      $("#gif-view").prepend(p)
+    };
+
+  });
+
+};
+
 renderButtons();
 
-$(document).on("click", ".interests", function () {
-  console.log("click click");
 
-  var topicData = $(this).attr("data-topic");
-  console.log(topicData);
+$(document).on("click", "#topic-btn", displaygif);
 
- // var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + topicData + "&api_key=" + key + "&limit=5"
 
-  //$.ajax({
-  // url: queryURL,
-  //  method: "GET"
-  //}).then(function (response) {
-  // console.log("this is line 45" + response);
-   displaygif();
-  //});
-//
 
-});
-
+  
 // make new buttons as new topics added  (take from class exercise #10).
 
 
@@ -72,51 +81,21 @@ $("#add-gif").on("click", function (event) {
 });
 
 
-
-
-function displaygif() {
- //var gif = $(this).attr("data-type");
- var topicData = $(this).attr("data-topic");
- var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + topicData + "&api_key=" + key + "&limit=5"
-  $.ajax({
-    url: queryURL,
-    method: "GET"
- }).then(function (response) {
-    console.log("line 79 call " + response);
-    for (var i = 0; i < topics.length; i++) {
-console.log(topics)
-      var temp = response.data[i]
-      var gifUrl = temp.images.fixed_height.url
-      let p = $("<p>")
-      let img = $("<img>").attr("id", "gif-img")
-      let a = $("<p>").text("Rating: " + temp.rating)
-      p.addClass("jumbotron")
-      img.attr("state", "animate")
-      img.attr("src", gifUrl)
-      img.attr("animate-url", temp.images.fixed_height.url)
-      img.attr("still-url", temp.images.original_still.url)
-      p.append(img)
-      p.append(a)
-      $("#gif-view").prepend(p)
-    };
-
-  });
- 
-};
-
-
 //to still/animate
 
-$("#gifs-view").on("click", "#gif-img", function () {
-  if ($(this).attr("state") === "animate") {
-    $(this).attr("src", $(this).attr("still-url"))
-    $(this).attr("state", "still")
+$(document).on("click", ".gif-img", function(){
+                 var state = $(this).attr("data-state")
+
+
+  if (state === "animate") {
+    $(this).attr("src", $(this).attr("data-animate"))
+    $(this).attr("data-state", "animate")
 
   }
   else {
-    var animate = $(this).attr("animate-url")
-    $(this).attr("src", $(this).attr("animate-url"))
-    $(this).attr("state", "animate")
+  
+    $(this).attr("src", $(this).attr("data-still"))
+    $(this).attr("data-state", "still")
   }
-
 })
+
